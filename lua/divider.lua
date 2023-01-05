@@ -1,5 +1,5 @@
 local job = require("job")
-local ui = require("script/divider/ui")
+local ui = require("ui")
 
 local ns_id = vim.api.nvim_create_namespace("divider")
 

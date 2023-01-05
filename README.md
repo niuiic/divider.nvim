@@ -6,9 +6,9 @@ Divider line for neovim.
 
 - highlight divider line
 
-![highlight divider line](./img/hl.png)
+![highlight divider line](./img/highlight.png)
 
-- list dividers in loclist
+- list dividers in loclist and show the hierarchical relationship of dividers
 
 ![list dividers in loclist](./img/list.png)
 

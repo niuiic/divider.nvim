@@ -1,23 +1,14 @@
-local plenary = require("plenary")
-
 local search = function(pattern, file)
 	if not file then
 		file = vim.api.nvim_buf_get_name(0)
 	end
 
-	local results = {}
-
-	plenary.job
-		:new({
-			command = "rg",
-			args = { "-e " .. pattern, file, "--vimgrep" },
-			on_exit = function(res)
-				results = res:result()
-			end,
-		})
-		:sync()
-
-	return results
+	local output = vim.fn.systemlist({ "rg", "-e " .. pattern, file, "--vimgrep" })
+	local res = {}
+	for _, value in ipairs(output) do
+		table.insert(res, value)
+	end
+	return res
 end
 
 return {

@@ -16,8 +16,7 @@ Divider line for neovim.
 
 ## Dependencies
 
-- rg
-- nvim-lua/plenary.nvim
+- [rg](https://github.com/BurntSushi/ripgrep)
 
 ## Config
 
@@ -53,7 +52,6 @@ Divider line for neovim.
 				},
 			},
 		})
-	end,
-	dependencies = { "nvim-lua/plenary.nvim" },
+	end
 }
 ```

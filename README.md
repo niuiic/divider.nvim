@@ -6,11 +6,11 @@ Divider line for neovim.
 
 - highlight divider line
 
-![highlight divider line](./img/highlight.png)
+<img src="https://github.com/niuiic/assets/blob/main/divider.nvim/highlight.png" />
 
 - list dividers in loclist and show the hierarchical relationship of dividers
 
-![list dividers in loclist](./img/list.png)
+<img src="https://github.com/niuiic/assets/blob/main/divider.nvim/list.png" />
 
 - update on save
 
@@ -36,7 +36,7 @@ Divider line for neovim.
 					content_pattern = [[%%%%=+ ([%s%S]*) =+%%%%]],
                     -- highlight color
 					hl = "#ff00ff",
-                    -- list = true means this divider will be stored in loclist
+                    -- list = true means this divider will be listed in loclist
 					list = true,
 				},
 				{

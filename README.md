@@ -21,6 +21,7 @@ Divider line for neovim.
 ## Config
 
 ```lua
+-- no default config
 require("divider").setup({
     dividers = {
         {

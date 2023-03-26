@@ -5,47 +5,79 @@ Divider line for neovim.
 ## Features
 
 - highlight divider line
-
-<img src="https://github.com/niuiic/assets/blob/main/divider.nvim/highlight.png" />
-
-- list dividers in loclist and show the hierarchical relationship of dividers
-
-<img src="https://github.com/niuiic/assets/blob/main/divider.nvim/list.png" />
-
+- list dividers and show their hierarchical relationship
+- navigate to the divider
 - update on save
+
+<img src="https://github.com/niuiic/assets/blob/main/divider.nvim/divider.png" />
 
 ## Dependencies
 
 - [rg](https://github.com/BurntSushi/ripgrep)
+- [niuiic-core.nvim](https://github.com/niuiic/niuiic-core.nvim)
 
 ## Config
 
+- default config
+
 ```lua
--- no default config
 require("divider").setup({
-    dividers = {
-        {
-            -- divider_pattern is passed to rg command
-            divider_pattern = [[%%=+ [\s\S]+ =+%%]],
-            -- content_pattern is used by lua function string.match
-            content_pattern = [[%%%%=+ ([%s%S]*) =+%%%%]],
-            -- highlight color
-            hl = "#ff00ff",
-            -- list = true means this divider will be listed in loclist
-            list = true,
-        },
-        {
-            divider_pattern = [[%%-+ [\s\S]+ -+%%]],
-            content_pattern = [[%%%%%-+ ([%s%S]*) %-+%%%%]],
-            hl = "#ffff00",
-            list = true,
-        },
-        {
-            divider_pattern = [[%% [\s\S]+ %%]],
-            content_pattern = [[%%%% ([%s%S]*) %%%%]],
-            hl = "#00ff7c",
-            list = false,
-        },
-    },
+	dividers = {},
+	enabled_filetypes = {},
+	ui = { direction = "v", size = 40, enter = false },
 })
 ```
+
+- example
+
+```lua
+require("divider").setup({
+	dividers = {
+		{
+			-- regex used to match dividers
+			-- this is passed to rg command
+			divider_regex = [[%%=+ [\s\S]+ =+%%]],
+			-- regex used to match content of each divider
+			-- this is used by lua function string.match
+			content_regex = [[%%%%=+ ([%s%S]*) =+%%%%]],
+			-- highlight color
+			hl = "#ff00ff",
+			-- icon (string | nil)
+			icon = "",
+			-- icon color (string | nil)
+			icon_hl = "#ffff00",
+			-- whether to show in list (boolean | nil)
+			hide = false,
+		},
+		{
+			divider_regex = [[%%-+ [\s\S]+ -+%%]],
+			content_regex = [[%%%%%-+ ([%s%S]*) %-+%%%%]],
+			hl = "#ffff00",
+			icon = "",
+		},
+		{
+			divider_regex = [[%% [\s\S]+ %%]],
+			content_regex = [[%%%% ([%s%S]*) %%%%]],
+			hl = "#00ff7c",
+			icon = "",
+		},
+	},
+	enabled_filetypes = { "lua" },
+	ui = {
+		-- "v" | "h"
+		direction = "v",
+		size = 40,
+		enter = false,
+	},
+})
+```
+
+## Usage
+
+`:DividerToggle` to toggle the list window.
+
+on list window:
+
+- `<CR>` to navigate to the divider.
+- `h` to fold node
+- `l` to expand node

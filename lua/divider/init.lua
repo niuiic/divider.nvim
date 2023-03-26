@@ -1,124 +1,100 @@
 local job = require("divider.job")
 local ui = require("divider.ui")
+local static = require("divider.static")
+local core = require("niuiic-core")
 
-local ns_id = vim.api.nvim_create_namespace("divider")
+---@param matched_lines string[]
+---@param divider_config Divider
+---@return Tree.Node[]
+local parse = function(matched_lines, divider_config, level)
+	local nodes = {}
+	local winnr = vim.api.nvim_get_current_win()
+	for _, value in ipairs(matched_lines) do
+		local line_nr = string.match(value, "(%d+):%d+")
+		local content = string.match(value, divider_config.content_regex)
+		if line_nr and content then
+            local icon_hl
+            if divider_config.icon_hl then
+               icon_hl = "DividerIcon" .. level
+            end
 
-local function _pattern(search_result, content_regexp)
-	if content_regexp == nil then
-		return nil
-	end
-
-	local lines = {}
-	local content_list = {}
-	for _, value in ipairs(search_result) do
-		local matched_line_str = string.match(value, "(%d+):%d+")
-		if matched_line_str then
-			table.insert(lines, tonumber(matched_line_str))
+			table.insert(nodes, {
+				label = content,
+				action = {
+					on_click = function()
+                        vim.api.nvim_set_current_win(winnr)
+						vim.api.nvim_win_set_cursor(winnr, {tonumber(line_nr), 0})
+					end,
+				},
+				status = { expanded = true },
+				option = {
+                    hl = 'Divider' .. level,
+					icon = divider_config.icon,
+					icon_hl = icon_hl,
+					hide = divider_config.hide,
+				},
+				level = level,
+				children = {},
+				extend = {
+					line = tonumber(line_nr),
+				},
+			})
 		end
-		local content = string.match(value, content_regexp)
-		if content then
-			table.insert(content_list, content)
-		end
 	end
-
-	return { lines = lines, content_list = content_list }
+	return nodes
 end
 
-local function _highlight_divider(lines, highlight)
-	for _, line in ipairs(lines) do
-		vim.api.nvim_buf_add_highlight(0, ns_id, highlight, line - 1, 0, -1)
-	end
-end
+---@param divider_config_list Divider[]
+---@param create_tree_view boolean | nil
+local divide = function(divider_config_list, create_tree_view)
+	vim.api.nvim_buf_clear_namespace(0, static.ns_id, 0, -1)
 
-local function _get_divider_info(line, level, content)
-	local prefix = "#" .. level .. ":"
-	local temp = level
-	while temp > 1 do
-		prefix = prefix .. "  "
-		temp = temp - 1
-	end
-	return {
-		line = line,
-		level = level,
-		content = vim.api.nvim_buf_get_name(0) .. "|" .. line .. "| " .. prefix .. content,
-	}
-end
-
-local function _set_loclist(dividers)
-	table.sort(dividers, function(cur, next)
-		if cur.line < next.line then
-			return true
-		else
-			return false
-		end
-	end)
-	local loclist = {}
-	for _, value in ipairs(dividers) do
-		table.insert(loclist, value.content)
-	end
-	vim.fn.setloclist(0, {}, "r", {
-		lines = loclist,
-	})
-end
-
-local function divide(divider_config)
-	vim.api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
-	local dividers = {}
-	for level, pattern in ipairs(divider_config) do
-		local search_res = job.search(pattern.divider_pattern)
-		if #search_res == 0 then
+	local nodes = {}
+	local file = vim.api.nvim_buf_get_name(0)
+	for level, divider_config in ipairs(divider_config_list) do
+		local matched_lines = job.search(divider_config.divider_regex, file)
+		if #matched_lines == 0 then
 			goto continue
 		end
 
-		local pattern_res = _pattern(search_res, pattern.content_pattern)
-		if pattern_res == nil then
-			goto continue
-		end
-
-		_highlight_divider(pattern_res.lines, "Divider" .. level)
-
-		if pattern.list then
-			for index, value in ipairs(pattern_res.content_list) do
-				table.insert(dividers, _get_divider_info(pattern_res.lines[index], level, value))
-			end
-		end
+        nodes =	core.lua.list.merge(nodes, parse(matched_lines, divider_config, level))
 
 		::continue::
 	end
-	_set_loclist(dividers)
-	vim.cmd("TroubleRefresh")
+
+	ui.highlight_divider(nodes, static.ns_id)
+    if static.tree_view_handle then
+        ui.refresh_tree_view(nodes)
+    elseif create_tree_view then
+        ui.create_tree_view(nodes)
+    end
 end
 
-local config = {
-	dividers = {},
-}
-
-local autocmd_setted = false
-
-local function _set_autocmd()
-	vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
-		pattern = { "*" },
-		callback = function()
-			if vim.bo.filetype ~= "qf" then
-				divide(config.dividers)
-			end
-		end,
-	})
-	autocmd_setted = true
+local toggle_tree_view = function()
+	if static.tree_view_handle then
+        if
+            not vim.api.nvim_win_is_valid(static.tree_view_handle.winnr)
+            or not vim.api.nvim_buf_is_valid(static.tree_view_handle.bufnr)
+        then
+            pcall(vim.api.nvim_buf_delete, static.tree_view_handle.bufnr, { force = true, unload = false })
+            static.tree_view_handle = nil
+            divide(static.config.dividers, true)
+        else
+            pcall(vim.api.nvim_buf_delete, static.tree_view_handle.bufnr, { force = true, unload = false })
+            static.tree_view_handle = nil
+        end
+	else
+        divide(static.config.dividers, true)
+	end
 end
 
-local function setup(new_config)
-	config = vim.tbl_deep_extend("force", config, new_config or {})
-	local hl_group = {}
-	for _, value in ipairs(config.dividers) do
-		table.insert(hl_group, value.hl)
-	end
-	ui.create_hl_group(hl_group)
-	if autocmd_setted == false then
-		_set_autocmd()
-	end
+local setup = function(new_config)
+	static.config = vim.tbl_deep_extend("force", static.config, new_config or {})
+	ui.create_hl_group(static.config.dividers)
 end
 
 return {
 	setup = setup,
+	divide = divide,
+    toggle_tree_view = toggle_tree_view
 }

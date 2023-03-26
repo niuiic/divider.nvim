@@ -1,14 +1,8 @@
-local search = function(pattern, file)
-	if not file then
-		file = vim.api.nvim_buf_get_name(0)
-	end
-
-	local output = vim.fn.systemlist({ "rg", "-e " .. pattern, file, "--vimgrep" })
-	local res = {}
-	for _, value in ipairs(output) do
-		table.insert(res, value)
-	end
-	return res
+---@param regex string
+---@param file string
+---@return string[]
+local search = function(regex, file)
+	return vim.fn.systemlist({ "rg", "-e " .. regex, file, "--vimgrep" })
 end
 
 return {

@@ -29,9 +29,7 @@ local tree = function(nodes)
 		return prev.extend.line > cur.extend.line
 	end)
 	for index, node in ipairs(nodes) do
-		if node.level == 1 then
-			table.insert(root.children, node)
-		else
+		if node.level > 1 then
 			for i = index - 1, 1, -1 do
 				if nodes[i].level < node.level then
 					table.insert(nodes[i].children, node)
@@ -39,6 +37,7 @@ local tree = function(nodes)
 				end
 			end
 		end
+		table.insert(root.children, node)
 		::continue::
 	end
 	return root.children

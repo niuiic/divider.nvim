@@ -7,6 +7,7 @@ Divider line for neovim.
 - highlight divider line
 - list dividers and show their hierarchical relationship
 - navigate to the divider
+- highlight current divider
 - update on save
 
 <img src="https://github.com/niuiic/assets/blob/main/divider.nvim/divider.png" />
@@ -24,6 +25,8 @@ Divider line for neovim.
 require("divider").setup({
 	dividers = {},
 	enabled_filetypes = {},
+	highlight_current_divider = true,
+	current_divider_hl = "#0083a7",
 	ui = { direction = "v", size = 40, enter = false },
 })
 ```
@@ -63,6 +66,10 @@ require("divider").setup({
 		},
 	},
 	enabled_filetypes = { "lua" },
+	-- whether to highlight current divider in divider panel
+	highlight_current_divider = true,
+	-- background color of current divider
+	current_divider_hl = "#0083a7",
 	ui = {
 		-- "v" | "h"
 		direction = "v",

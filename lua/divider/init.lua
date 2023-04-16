@@ -44,6 +44,8 @@ local parse = function(matched_lines, divider_config, level)
 	return nodes
 end
 
+local highlight_current_divider = ui.highlight_current_divider_wrapper()
+
 ---@param divider_config_list Divider[]
 ---@param create_tree_view boolean | nil
 local divide = function(divider_config_list, create_tree_view)
@@ -68,6 +70,7 @@ local divide = function(divider_config_list, create_tree_view)
     elseif create_tree_view then
         ui.create_tree_view(nodes)
     end
+    highlight_current_divider()
 end
 
 local toggle_tree_view = function()
@@ -93,8 +96,10 @@ local setup = function(new_config)
 	ui.create_hl_group(static.config.dividers)
 end
 
+
 return {
 	setup = setup,
 	divide = divide,
-    toggle_tree_view = toggle_tree_view
+    toggle_tree_view = toggle_tree_view,
+    highlight_current_divider = highlight_current_divider
 }

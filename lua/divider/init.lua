@@ -36,7 +36,7 @@ local parse = function(matched_lines, divider_config, level)
 				level = level,
 				children = {},
 				extend = {
-					line = tonumber(line_nr),
+					line = tonumber(line_nr)
 				},
 			})
 		end

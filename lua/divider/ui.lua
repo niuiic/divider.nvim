@@ -64,15 +64,20 @@ vim.api.nvim_set_hl(0, "CurrentDivider", { bg = static.config.current_divider_hl
 --- find cur_divider_index
 ---@param line number
 ---@param dividers Tree.Line[]
----@return number
+---@return number | nil
 local cur_divider_index = function(line, dividers)
-	local targetIndex
-	for i, v in ipairs(dividers) do
-		if v.node.extend.line <= line then
-			targetIndex = i
+	local sorted_dividers = core.lua.list.sort(dividers, function(prev, cur)
+		return prev.node.extend.line > cur.node.extend.line
+	end)
+	for i, v in ipairs(sorted_dividers) do
+		if v.node.extend.line == line then
+			return i
+		end
+		if v.node.extend.line > line then
+			return i - 1
 		end
 	end
-	return targetIndex
+	return nil
 end
 
 --- whether in range of the previous divider
@@ -100,28 +105,30 @@ local range = function(current_divider_index, dividers)
 end
 
 local highlight_current_divider_wrapper = function()
-	local cur_divider_range = {}
+	local prev_divider_range = {}
+	local prevDividersCount = 0
 	return function()
 		if not static.tree_view_handle then
 			return
 		end
 
+		local dividers = static.tree_view_handle.tree_view.lines
+		local hasDividersChange = prevDividersCount ~= table.maxn(dividers)
+		prevDividersCount = table.maxn(dividers)
+
 		local line = vim.api.nvim_win_get_cursor(0)[1]
-		if in_range(line, cur_divider_range) then
+		if not hasDividersChange and in_range(line, prev_divider_range) then
 			return
 		end
 
 		vim.api.nvim_buf_clear_namespace(static.tree_view_handle.bufnr, static.ns_id2, 0, -1)
 
-		local dividers = core.lua.list.sort(static.tree_view_handle.tree_view.lines, function(prev, cur)
-			return prev.node.extend.line > cur.node.extend.line
-		end)
 		local targetIndex = cur_divider_index(line, dividers)
 		if not targetIndex then
 			return
 		end
 
-		cur_divider_range = range(targetIndex, dividers)
+		prev_divider_range = range(targetIndex, dividers)
 
 		vim.api.nvim_buf_add_highlight(
 			static.tree_view_handle.bufnr,

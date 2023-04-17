@@ -69,15 +69,13 @@ local cur_divider_index = function(line, dividers)
 	local sorted_dividers = core.lua.list.sort(dividers, function(prev, cur)
 		return prev.node.extend.line > cur.node.extend.line
 	end)
+	local targetIndex
 	for i, v in ipairs(sorted_dividers) do
-		if v.node.extend.line == line then
-			return i
-		end
-		if v.node.extend.line > line then
-			return i - 1
+		if v.node.extend.line <= line then
+			targetIndex = i
 		end
 	end
-	return nil
+	return targetIndex
 end
 
 --- whether in range of the previous divider
@@ -124,7 +122,9 @@ local highlight_current_divider_wrapper = function()
 		vim.api.nvim_buf_clear_namespace(static.tree_view_handle.bufnr, static.ns_id2, 0, -1)
 
 		local targetIndex = cur_divider_index(line, dividers)
+		targetIndex = cur_divider_index(line, dividers)
 		if not targetIndex then
+			prev_divider_range = {}
 			return
 		end
 

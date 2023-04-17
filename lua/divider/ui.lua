@@ -105,40 +105,46 @@ end
 local highlight_current_divider_wrapper = function()
 	local prev_divider_range = {}
 	local prevDividersCount = 0
-	return function()
-		if not static.tree_view_handle then
-			return
-		end
+	return {
+		highlight_current_divider = function()
+			if not static.tree_view_handle then
+				return
+			end
 
-		local dividers = static.tree_view_handle.tree_view.lines
-		local hasDividersChange = prevDividersCount ~= table.maxn(dividers)
-		prevDividersCount = table.maxn(dividers)
+			local dividers = static.tree_view_handle.tree_view.lines
+			local hasDividersChange = prevDividersCount ~= table.maxn(dividers)
+			prevDividersCount = table.maxn(dividers)
 
-		local line = vim.api.nvim_win_get_cursor(0)[1]
-		if not hasDividersChange and in_range(line, prev_divider_range) then
-			return
-		end
+			local line = vim.api.nvim_win_get_cursor(0)[1]
+			if not hasDividersChange and in_range(line, prev_divider_range) then
+				return
+			end
 
-		vim.api.nvim_buf_clear_namespace(static.tree_view_handle.bufnr, static.ns_id2, 0, -1)
+			vim.api.nvim_buf_clear_namespace(static.tree_view_handle.bufnr, static.ns_id2, 0, -1)
 
-		local targetIndex = cur_divider_index(line, dividers)
-		targetIndex = cur_divider_index(line, dividers)
-		if not targetIndex then
+			local targetIndex = cur_divider_index(line, dividers)
+			targetIndex = cur_divider_index(line, dividers)
+			if not targetIndex then
+				prev_divider_range = {}
+				return
+			end
+
+			prev_divider_range = range(targetIndex, dividers)
+
+			vim.api.nvim_buf_add_highlight(
+				static.tree_view_handle.bufnr,
+				static.ns_id2,
+				"CurrentDivider",
+				dividers[targetIndex].line - 1,
+				0,
+				-1
+			)
+		end,
+		reset_range = function()
 			prev_divider_range = {}
-			return
-		end
-
-		prev_divider_range = range(targetIndex, dividers)
-
-		vim.api.nvim_buf_add_highlight(
-			static.tree_view_handle.bufnr,
-			static.ns_id2,
-			"CurrentDivider",
-			dividers[targetIndex].line - 1,
-			0,
-			-1
-		)
-	end
+			prevDividersCount = 0
+		end,
+	}
 end
 
 return {

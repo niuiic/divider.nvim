@@ -107,14 +107,13 @@ local highlight_current_divider_wrapper = function()
 	local prevDividersCount = 0
 	return {
 		highlight_current_divider = function()
-			if not static.tree_view_handle then
+			if not static.tree_view_handle or not vim.api.nvim_buf_is_valid(static.tree_view_handle.bufnr) then
 				return
 			end
 
 			local dividers = static.tree_view_handle.tree_view.lines
 			local hasDividersChange = prevDividersCount ~= table.maxn(dividers)
 			prevDividersCount = table.maxn(dividers)
-
 			local line = vim.api.nvim_win_get_cursor(0)[1]
 			if not hasDividersChange and in_range(line, prev_divider_range) then
 				return

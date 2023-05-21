@@ -27,7 +27,7 @@ require("divider").setup({
 	enabled_filetypes = {},
 	highlight_current_divider = true,
 	current_divider_hl = "#0083a7",
-	ui = { direction = "v", size = 40, enter = false },
+	ui = { direction = "vr", size = 40, enter = false },
 })
 ```
 
@@ -71,8 +71,8 @@ require("divider").setup({
 	-- background color of current divider
 	current_divider_hl = "#0083a7",
 	ui = {
-		-- "v" | "h"
-		direction = "v",
+		-- 'vl'|'vr'|'ht'|'hb'
+		direction = "vr",
 		size = 40,
 		enter = false,
 	},

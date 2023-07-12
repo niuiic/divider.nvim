@@ -34,3 +34,11 @@ vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
 vim.api.nvim_create_user_command("DividerToggle", function()
 	divider.toggle_tree_view()
 end, {})
+
+vim.api.nvim_create_user_command("RefreshDivider", function()
+	if core.lua.list.includes(static.config.enabled_filetypes, function(v)
+		return v == vim.bo.filetype
+	end) then
+		divider.divide(static.config.dividers)
+	end
+end, {})

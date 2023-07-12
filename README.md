@@ -81,6 +81,8 @@ require("divider").setup({
 
 ## Usage
 
+`:RefreshDivider` to refresh dividers.
+
 `:DividerToggle` to toggle the list window.
 
 on list window:

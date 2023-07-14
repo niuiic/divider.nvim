@@ -15,7 +15,7 @@ Divider line for neovim.
 ## Dependencies
 
 - [rg](https://github.com/BurntSushi/ripgrep)
-- [niuiic-core.nvim](https://github.com/niuiic/niuiic-core.nvim)
+- [core.nvim](https://github.com/niuiic/core.nvim)
 
 ## Config
 

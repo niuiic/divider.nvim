@@ -1,4 +1,4 @@
-local core = require("niuiic-core")
+local core = require("core")
 local static = require("divider.static")
 
 ---@param divider_config_list Divider[]

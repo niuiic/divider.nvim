@@ -1,7 +1,7 @@
 local job = require("divider.job")
 local ui = require("divider.ui")
 local static = require("divider.static")
-local core = require("niuiic-core")
+local core = require("core")
 
 ---@param matched_lines string[]
 ---@param divider_config Divider

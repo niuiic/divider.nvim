@@ -1,6 +1,6 @@
 local divider = require("divider")
 local static = require("divider.static")
-local core = require("niuiic-core")
+local core = require("core")
 
 vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWritePost" }, {
 	pattern = { "*" },

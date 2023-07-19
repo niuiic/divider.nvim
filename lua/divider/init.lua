@@ -8,7 +8,7 @@ local highlight_current_divider_handle = ui.highlight_current_divider_wrapper()
 local divide = function(create_tree_view)
 	vim.api.nvim_buf_clear_namespace(0, static.ns_id, 0, -1)
 
-	local nodes = utils.search(vim.api.nvim_win_get_number(0))
+	local nodes = utils.search(vim.api.nvim_get_current_win())
 
 	ui.highlight_divider(nodes, static.ns_id)
 

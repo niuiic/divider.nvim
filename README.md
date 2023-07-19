@@ -79,6 +79,8 @@ require("divider").setup({
 
 `:DividerToggle` to toggle the list window.
 
+`:CopyDividers` to copy dividers to clipboard.
+
 on list window:
 
 - `<CR>` to navigate to the divider.

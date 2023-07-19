@@ -42,3 +42,7 @@ vim.api.nvim_create_user_command("RefreshDivider", function()
 		divider.divide(static.config.dividers)
 	end
 end, {})
+
+vim.api.nvim_create_user_command("CopyDividers", function()
+	divider.cp_dividers()
+end, {})

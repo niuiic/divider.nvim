@@ -11,7 +11,7 @@ local create_hl_group = function(divider_config_list)
 	end
 end
 
----@param nodes Tree.Node[]
+---@param nodes core.Tree.Node[]
 ---@param ns_id number
 local highlight_divider = function(nodes, ns_id)
 	for _, node in ipairs(nodes) do
@@ -19,8 +19,8 @@ local highlight_divider = function(nodes, ns_id)
 	end
 end
 
----@param nodes Tree.Node[]
----@return Tree.Node[]
+---@param nodes core.Tree.Node[]
+---@return core.Tree.Node[]
 local tree = function(nodes)
 	local root = {
 		children = {},
@@ -43,13 +43,13 @@ local tree = function(nodes)
 	return root.children
 end
 
----@param nodes Tree.Node[]
+---@param nodes core.Tree.Node[]
 local create_tree_view = function(nodes)
 	static.tree_view_handle = core.tree.create_tree_view(tree(nodes), static.config.ui)
 	vim.api.nvim_buf_set_option(static.tree_view_handle.bufnr, "filetype", "divider")
 end
 
----@param nodes Tree.Node[]
+---@param nodes core.Tree.Node[]
 local refresh_tree_view = function(nodes)
 	if
 		vim.api.nvim_win_is_valid(static.tree_view_handle.winnr)
@@ -63,7 +63,7 @@ vim.api.nvim_set_hl(0, "CurrentDivider", { bg = static.config.current_divider_hl
 
 --- find cur_divider_index
 ---@param line number
----@param dividers Tree.Line[]
+---@param dividers core.Tree.Line[]
 ---@return number | nil
 local cur_divider_index = function(line, dividers)
 	local sorted_dividers = core.lua.list.sort(dividers, function(prev, cur)
@@ -88,7 +88,7 @@ end
 
 --- calc range of current divider
 ---@param current_divider_index number
----@param dividers Tree.Line[]
+---@param dividers core.Tree.Line[]
 ---@return number[]
 local range = function(current_divider_index, dividers)
 	local cur_divider_range = {

@@ -46,7 +46,7 @@ end
 
 local cp_dividers = function()
 	local dividers = search(0)
-	dividers = core.lua.filter(dividers, function(divider)
+	dividers = core.lua.list.filter(dividers, function(divider)
 		return not divider.option.hide
 	end)
 	local lines = core.lua.list.map(dividers, function(divider)

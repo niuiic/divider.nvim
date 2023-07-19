@@ -10,7 +10,7 @@ vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWritePost" }, {
 				return v == vim.bo.filetype
 			end)
 		then
-			divider.divide(static.config.dividers)
+			divider.divide()
 		end
 	end,
 })

@@ -15,7 +15,7 @@ end
 ---@param ns_id number
 local highlight_divider = function(nodes, ns_id)
 	for _, node in ipairs(nodes) do
-		vim.api.nvim_buf_add_highlight(0, ns_id, "Divider" .. node.level, node.extend.line - 1, 0, -1)
+		vim.api.nvim_buf_add_highlight(0, ns_id, "Divider" .. node.level, node.extend.line_nr - 1, 0, -1)
 	end
 end
 
@@ -26,7 +26,7 @@ local tree = function(nodes)
 		children = {},
 	}
 	nodes = core.lua.list.sort(nodes, function(prev, cur)
-		return prev.extend.line > cur.extend.line
+		return prev.extend.line_nr > cur.extend.line_nr
 	end)
 	for index, node in ipairs(nodes) do
 		if node.level > 1 then
@@ -46,7 +46,9 @@ end
 ---@param nodes core.Tree.Node[]
 local create_tree_view = function(nodes)
 	static.tree_view_handle = core.tree.create_tree_view(tree(nodes), static.config.ui)
-	vim.api.nvim_buf_set_option(static.tree_view_handle.bufnr, "filetype", "divider")
+	vim.api.nvim_set_option_value("filetype", "divider", {
+		buf = static.tree_view_handle.bufnr,
+	})
 end
 
 ---@param nodes core.Tree.Node[]
@@ -67,11 +69,11 @@ vim.api.nvim_set_hl(0, "CurrentDivider", { bg = static.config.current_divider_hl
 ---@return number | nil
 local cur_divider_index = function(line, dividers)
 	local sorted_dividers = core.lua.list.sort(dividers, function(prev, cur)
-		return prev.node.extend.line > cur.node.extend.line
+		return prev.node.extend.line_nr > cur.node.extend.line_nr
 	end)
 	local targetIndex
 	for i, v in ipairs(sorted_dividers) do
-		if v.node.extend.line <= line then
+		if v.node.extend.line_nr <= line then
 			targetIndex = i
 		end
 	end
@@ -92,10 +94,10 @@ end
 ---@return number[]
 local range = function(current_divider_index, dividers)
 	local cur_divider_range = {
-		dividers[current_divider_index].node.extend.line,
+		dividers[current_divider_index].node.extend.line_nr,
 	}
 	if table.maxn(dividers) >= current_divider_index + 1 then
-		cur_divider_range[2] = dividers[current_divider_index + 1].node.extend.line
+		cur_divider_range[2] = dividers[current_divider_index + 1].node.extend.line_nr
 	else
 		cur_divider_range[2] = -1
 	end

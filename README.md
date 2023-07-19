@@ -14,8 +14,7 @@ Divider line for neovim.
 
 ## Dependencies
 
-- [rg](https://github.com/BurntSushi/ripgrep)
-- [core.nvim](https://github.com/niuiic/core.nvim)
+- [niuiic/core.nvim](https://github.com/niuiic/core.nvim)
 
 ## Config
 
@@ -37,12 +36,9 @@ require("divider").setup({
 require("divider").setup({
 	dividers = {
 		{
-			-- regex used to match dividers
-			-- this is passed to rg command
-			divider_regex = [[%%=+ [\s\S]+ =+%%]],
 			-- regex used to match content of each divider
 			-- this is used by lua function string.match
-			content_regex = [[%%%%=+ ([%s%S]*) =+%%%%]],
+			regex = [[%%%%=+ ([%s%S]*) =+%%%%]],
 			-- highlight color
 			hl = "#ff00ff",
 			-- icon (string | nil)
@@ -53,14 +49,12 @@ require("divider").setup({
 			hide = false,
 		},
 		{
-			divider_regex = [[%%-+ [\s\S]+ -+%%]],
-			content_regex = [[%%%%%-+ ([%s%S]*) %-+%%%%]],
+			regex = [[%%%%%-+ ([%s%S]*) %-+%%%%]],
 			hl = "#ffff00",
 			icon = "",
 		},
 		{
-			divider_regex = [[%% [\s\S]+ %%]],
-			content_regex = [[%%%% ([%s%S]*) %%%%]],
+			regex = [[%%%% ([%s%S]*) %%%%]],
 			hl = "#00ff7c",
 			icon = "",
 		},

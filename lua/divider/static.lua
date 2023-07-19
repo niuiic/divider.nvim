@@ -1,6 +1,5 @@
 ---@class Divider
----@field divider_regex string
----@field content_regex string
+---@field regex string
 ---@field hl string
 ---@field icon string | nil
 ---@field icon_hl string | nil

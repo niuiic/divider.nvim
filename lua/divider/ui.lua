@@ -17,9 +17,13 @@ local highlight_divider = function(nodes, ns_id)
 	local columns = vim.opt.columns:get()
 	for _, node in ipairs(nodes) do
 		vim.api.nvim_buf_add_highlight(0, ns_id, "Divider" .. node.level, node.extend.line_nr - 1, 0, -1)
-		if node.option.extmark then
-			vim.api.nvim_buf_set_extmark(0, ns_id, node.extend.line_nr - 1, 1, {
-				virt_text = { { string.rep(node.option.extmark, columns), "Divider" .. node.level } },
+		if node.extend.extmark then
+			vim.api.nvim_buf_set_extmark(0, ns_id, node.extend.line_nr - 1, 0, {
+				virt_lines = { { { string.rep(node.extend.extmark, columns), "Divider" .. node.level } } },
+				virt_lines_above = true,
+			})
+			vim.api.nvim_buf_set_extmark(0, ns_id, node.extend.line_nr - 1, 0, {
+				virt_lines = { { { string.rep(node.extend.extmark, columns), "Divider" .. node.level } } },
 			})
 		end
 	end

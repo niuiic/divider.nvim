@@ -47,7 +47,7 @@ require("divider").setup({
 			icon_hl = "#ffff00",
 			-- whether to show in list (boolean | nil)
 			hide = false,
-            -- virtual mark behind the dividing line
+            -- virtual mark around the dividing line
             extmark = '-'
 		},
 		{

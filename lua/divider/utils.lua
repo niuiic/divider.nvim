@@ -28,13 +28,13 @@ local search = function(winnr)
 						icon = config.icon,
 						icon_hl = icon_hl,
 						hide = config.hide,
-						extmark = config.extmark,
 					},
 					level = level,
 					children = {},
 					extend = {
 						line = line,
 						line_nr = line_nr,
+						extmark = config.extmark,
 					},
 				})
 				return

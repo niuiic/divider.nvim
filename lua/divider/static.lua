@@ -4,6 +4,7 @@
 ---@field icon string | nil
 ---@field icon_hl string | nil
 ---@field hide boolean | nil
+---@field extmark string | nil
 
 local config = {
 	---@type Divider[]

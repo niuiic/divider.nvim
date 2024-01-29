@@ -47,6 +47,8 @@ require("divider").setup({
 			icon_hl = "#ffff00",
 			-- whether to show in list (boolean | nil)
 			hide = false,
+            -- virtual mark behind the dividing line
+            extmark = '-'
 		},
 		{
 			regex = [[%%%%%-+ ([%s%S]*) %-+%%%%]],

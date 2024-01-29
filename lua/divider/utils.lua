@@ -53,6 +53,9 @@ local cp_dividers = function()
 		return divider.extend.line
 	end)
 	vim.fn.setreg("+", table.concat(lines, "\n"))
+	vim.notify("All dividers have been copied", vim.log.levels.INFO, {
+		title = "Divider",
+	})
 end
 
 return {

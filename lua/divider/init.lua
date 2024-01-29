@@ -2,7 +2,7 @@ local utils = require("divider.utils")
 local ui = require("divider.ui")
 local static = require("divider.static")
 
-local highlight_current_divider_handle = ui.highlight_current_divider_wrapper()
+local highlight_current_divider = ui.use_highlight_current_divider()
 
 ---@param create_tree_view boolean | nil
 local divide = function(create_tree_view)
@@ -18,8 +18,8 @@ local divide = function(create_tree_view)
 		ui.create_tree_view(nodes)
 	end
 
-	highlight_current_divider_handle.reset_range()
-	highlight_current_divider_handle.highlight_current_divider()
+	highlight_current_divider.reset_range()
+	highlight_current_divider.highlight()
 end
 
 local toggle_tree_view = function()
@@ -50,5 +50,5 @@ return {
 	divide = divide,
 	cp_dividers = utils.cp_dividers,
 	toggle_tree_view = toggle_tree_view,
-	highlight_current_divider = highlight_current_divider_handle.highlight_current_divider,
+	highlight_current_divider = highlight_current_divider.highlight,
 }

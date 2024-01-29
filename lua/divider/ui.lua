@@ -104,11 +104,11 @@ local range = function(current_divider_index, dividers)
 	return cur_divider_range
 end
 
-local highlight_current_divider_wrapper = function()
+local use_highlight_current_divider = function()
 	local prev_divider_range = {}
 	local prevDividersCount = 0
 	return {
-		highlight_current_divider = function()
+		highlight = function()
 			if not static.tree_view_handle or not vim.api.nvim_buf_is_valid(static.tree_view_handle.bufnr) then
 				return
 			end
@@ -153,5 +153,5 @@ return {
 	highlight_divider = highlight_divider,
 	create_tree_view = create_tree_view,
 	refresh_tree_view = refresh_tree_view,
-	highlight_current_divider_wrapper = highlight_current_divider_wrapper,
+	use_highlight_current_divider = use_highlight_current_divider,
 }

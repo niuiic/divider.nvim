@@ -35,6 +35,7 @@ local search = function(winnr)
 						line = line,
 						line_nr = line_nr,
 						extmark = config.extmark,
+						extmark_pos = config.extmark_pos or "both",
 					},
 				})
 				return

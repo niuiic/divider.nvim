@@ -18,13 +18,17 @@ local highlight_divider = function(nodes, ns_id)
 	for _, node in ipairs(nodes) do
 		vim.api.nvim_buf_add_highlight(0, ns_id, "Divider" .. node.level, node.extend.line_nr - 1, 0, -1)
 		if node.extend.extmark then
-			vim.api.nvim_buf_set_extmark(0, ns_id, node.extend.line_nr - 1, 0, {
-				virt_lines = { { { string.rep(node.extend.extmark, columns), "Divider" .. node.level } } },
-				virt_lines_above = true,
-			})
-			vim.api.nvim_buf_set_extmark(0, ns_id, node.extend.line_nr - 1, 0, {
-				virt_lines = { { { string.rep(node.extend.extmark, columns), "Divider" .. node.level } } },
-			})
+			if node.extend.extmark_pos == "both" or node.extend.extmark_pos == "top" then
+				vim.api.nvim_buf_set_extmark(0, ns_id, node.extend.line_nr - 1, 0, {
+					virt_lines = { { { string.rep(node.extend.extmark, columns), "Divider" .. node.level } } },
+					virt_lines_above = true,
+				})
+			end
+			if node.extend.extmark_pos == "both" or node.extend.extmark_pos == "bottom" then
+				vim.api.nvim_buf_set_extmark(0, ns_id, node.extend.line_nr - 1, 0, {
+					virt_lines = { { { string.rep(node.extend.extmark, columns), "Divider" .. node.level } } },
+				})
+			end
 		end
 	end
 end

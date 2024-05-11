@@ -2,6 +2,8 @@
 
 Divider line for neovim.
 
+[More neovim plugins](https://github.com/niuiic/awesome-neovim-plugins)
+
 ## Features
 
 - highlight divider line

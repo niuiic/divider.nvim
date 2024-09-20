@@ -2,7 +2,7 @@ local divider = require("divider")
 local static = require("divider.static")
 local core = require("core")
 
-vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWritePost" }, {
+vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter", "BufWritePost" }, {
 	pattern = { "*" },
 	callback = function()
 		if
@@ -39,7 +39,7 @@ vim.api.nvim_create_user_command("RefreshDivider", function()
 	if core.lua.list.includes(static.config.enabled_filetypes, function(v)
 		return v == vim.bo.filetype
 	end) then
-		divider.divide(static.config.dividers)
+		divider.divide()
 	end
 end, {})
 

@@ -1,9 +1,5 @@
 local M = {}
 
----@class divider.ConfigManager
----@field new fun(self: divider.ConfigManager, config: divider.Config): divider.ConfigManager
----@field set fun(self: divider.ConfigManager, config: divider.Config)
----@field get fun(self: divider.ConfigManager): divider.Config
 M.ConfigManager = {}
 
 function M.ConfigManager:new(config)

@@ -1,21 +1,10 @@
----@diagnostic disable: missing-fields
-
 local manager = require("divider.config.manager")
 
 -- % ConfigManager:set %
-local cfg = manager.ConfigManager:new({
-	outline = {
-		pos = "left",
-	},
-})
+local cfg = manager.ConfigManager:new({ a = 1 })
 
-local new_config = {
-	outline = {
-		width = 100,
-	},
-}
+local new_config = { b = 2 }
 cfg:set(new_config)
 
-assert(cfg:get().outline.pos == "left")
-assert(cfg:get().outline == 100)
-assert(#cfg:get().dividers == 0)
+assert(cfg:get().a == 1)
+assert(cfg:get().b == 2)

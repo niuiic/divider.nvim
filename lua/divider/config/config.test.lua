@@ -1,6 +1,6 @@
 local Config = require("divider.config.config")
 
--- % Config:set %
+-- % set %
 local cfg = Config:new({ a = { 1, 2, 3 }, c = { 1, 2 } })
 
 local new_config = { b = 2, c = { 4, 5 } }

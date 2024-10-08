@@ -27,7 +27,7 @@ local default_config = {
 		{
 			pattern = [[ %%%%%% (.+) %%%%%%]],
 			level = 3,
-			hl_group = "MoreMsg",
+			hl_group = "ModeMsg",
 			mark_char = "-",
 			mark_pos = "bottom",
 			is_visible_in_outline = true,

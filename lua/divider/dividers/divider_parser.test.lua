@@ -1,6 +1,6 @@
 local DividerParser = require("divider.dividers.divider_parser")
 
--- % DividerParser:parse_line %
+-- % parse_line %
 local divider_parser = DividerParser:new({
 	pattern = [[ %% (.+) %%]],
 	level = 1,
@@ -14,12 +14,12 @@ local divider_parser = DividerParser:new({
 })
 
 local ok, divider = pcall(function()
-	return divider_parser:parse_line("-- % DividerParser:parse_line %", 1, 1, 1)
+	return divider_parser:parse_line("-- % parse_line %", 1, 1, 1)
 end)
 assert(ok)
-assert(divider:get_text() == "DividerParser:parse_line")
+assert(divider:get_text() == "parse_line")
 
 ok = pcall(function()
-	return divider_parser:parse_line("-- %DividerParser:parse_line %", 1, 1, 1)
+	return divider_parser:parse_line("-- %parse_line %", 1, 1, 1)
 end)
 assert(not ok)

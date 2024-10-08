@@ -1,0 +1,3 @@
+local Outline = {}
+
+return Outline

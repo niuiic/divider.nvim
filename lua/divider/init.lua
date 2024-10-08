@@ -22,4 +22,7 @@ M.update_dividers = function(bufnr, winnr)
 	M.decorator:decorate_dividers(M.dividers)
 end
 
+-- % toggle_outline %
+M.toggle_outline = function() end
+
 return M

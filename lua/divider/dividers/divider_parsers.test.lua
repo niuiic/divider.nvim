@@ -1,6 +1,6 @@
 local DividerParsers = require("divider.dividers.divider_parsers")
 
--- % DividerParsers:parse_file %
+-- % parse_file %
 local divider_parsers = DividerParsers:new({
 	{
 		pattern = [[ %% (.+) %%]],

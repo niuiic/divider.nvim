@@ -7,10 +7,7 @@ M.default_config = {
 		local filetype = vim.api.nvim_get_option_value("filetype", {
 			buf = bufnr,
 		})
-		return filetype ~= nil
-			and filetype ~= "noice"
-			and filetype ~= "divider_outline"
-			and filetype ~= "divider_outline_preview"
+		return filetype ~= nil and filetype ~= "noice" and filetype ~= "divider_outline"
 	end,
 	dividers = {
 		{

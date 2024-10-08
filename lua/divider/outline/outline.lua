@@ -78,20 +78,49 @@ end
 function Outline:_draw_line(divider, lnum, bufnr)
 	local text =
 		string.format("%s%s: %s", string.rep("  ", divider:get_level() - 1), divider:get_lnum(), divider:get_text())
-	vim.api.nvim_buf_set_lines(bufnr, lnum - 1, lnum - 1, false, { text })
+	vim.api.nvim_buf_set_lines(bufnr, lnum - 1, lnum, false, { text })
 	vim.api.nvim_buf_add_highlight(bufnr, self._ns_id, divider:get_hl_group(), lnum - 1, 0, -1)
 end
 
 -- % set_keymap %
 function Outline:_set_keymap(config)
+	local bufnr = self._outline_window:get_bufnr()
+	local winnr = self._outline_window:get_winnr()
+	local function get_lnum()
+		return vim.api.nvim_win_get_cursor(winnr)[1]
+	end
 
+	-- navigate
+	vim.keymap.set("n", config.keymap_navigate, function()
+		self:_naviagate_to_divider(get_lnum())
+	end, {
+		buffer = bufnr,
+	})
+
+	-- preview
+	vim.keymap.set("n", config.keymap_preview, function()
+		self:_preview_divider(get_lnum())
+	end, {
+		buffer = bufnr,
+	})
+
+	-- close
+	vim.keymap.set("n", config.keymap_close, function()
+		self:close_outline()
+	end, {
+		buffer = bufnr,
+	})
 end
 
 -- % navigate_to_divider %
 function Outline:_naviagate_to_divider(lnum)
 	local divider = self:_get_divider(lnum)
+	vim.api.nvim_set_current_win(divider:get_winnr())
 	vim.api.nvim_win_set_cursor(divider:get_winnr(), { divider:get_lnum(), 0 })
 end
+
+-- % preview_divider %
+function Outline:_preview_divider(lnum) end
 
 -- % get_divider %
 function Outline:_get_divider(lnum)

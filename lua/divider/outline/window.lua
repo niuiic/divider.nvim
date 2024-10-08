@@ -44,9 +44,6 @@ function Window:new_float(relative_winnr, row, col, width, height)
 
 	local cur_zindex = vim.api.nvim_win_get_config(0).zindex or 0
 	instance._bufnr = vim.api.nvim_create_buf(false, true)
-	vim.api.nvim_set_option_value("filetype", "divider_outline_preview", {
-		buf = instance._bufnr,
-	})
 
 	instance._winnr = vim.api.nvim_open_win(instance._bufnr, false, {
 		relative = "win",

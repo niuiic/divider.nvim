@@ -1,7 +1,6 @@
 local divider = require("divider")
 
 vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "BufWritePost" }, {
-	pattern = { "*" },
 	callback = function()
 		local bufnr = vim.api.nvim_get_current_buf()
 		local winnr = vim.api.nvim_get_current_win()
@@ -14,7 +13,6 @@ vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "BufWritePost" }, {
 })
 
 vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-	pattern = { "*" },
 	callback = function()
 		local bufnr = vim.api.nvim_get_current_buf()
 		local winnr = vim.api.nvim_get_current_win()

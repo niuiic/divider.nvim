@@ -30,6 +30,7 @@ function Outline:open_outline(config)
 
 	self._outline_window = Window:new_split(config.win_pos, config.win_size)
 	self:_set_keymap(config)
+	self:_set_event_handlers(config)
 	self:_draw_lines()
 
 	if config.enter_window then
@@ -114,6 +115,37 @@ function Outline:_set_keymap(config)
 		self:close_outline()
 	end, {
 		buffer = bufnr,
+	})
+end
+
+-- % set_event_handlers %
+function Outline:_set_event_handlers(config)
+	local bufnr = self._outline_window:get_bufnr()
+	local winnr = self._outline_window:get_winnr()
+
+	if config.auto_preview then
+		local prev_lnum
+		vim.api.nvim_create_autocmd("CursorMoved", {
+			buffer = bufnr,
+			callback = function()
+				local lnum = vim.api.nvim_win_get_cursor(winnr)[1]
+				if prev_lnum == lnum then
+					return
+				end
+
+				prev_lnum = lnum
+				self:_preview_divider(lnum, config)
+			end,
+		})
+	end
+
+	vim.api.nvim_create_autocmd("WinLeave", {
+		buffer = bufnr,
+		callback = function()
+			if self._preview_window then
+				self._preview_window:close()
+			end
+		end,
 	})
 end
 

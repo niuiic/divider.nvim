@@ -149,7 +149,7 @@ classDiagram
         -get_divider(lnum: number)
         -preview_divider(lnum: number, config: OutlineConfig)
         -set_keymap(config: OutlineConfig)
-        -get_divider_content(line_count: number) string[]
+        -set_event_handlers(config: OutlineConfig)
     }
 
     class Window {

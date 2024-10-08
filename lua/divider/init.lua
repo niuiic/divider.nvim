@@ -2,11 +2,13 @@ local config = require("divider.config")
 local Dividers = require("divider.dividers").Dividers
 local DividerParsers = require("divider.dividers").DividerParsers
 local Decorator = require("divider.decorator")
+local Outline = require("divider.outline")
 
 local M = {
 	divider_parsers = DividerParsers:new(config:get().dividers),
 	dividers = {},
 	decorator = Decorator:new(),
+	outline = Outline:new(),
 }
 
 -- % setup %

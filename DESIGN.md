@@ -20,10 +20,6 @@
   - update on save or buffer switch
   - some dividers can be hidden
   - customize text
-  - fold/unfold
-    - fold all(default)
-    - unfold all
-    - keep fold state during updating
   - custom window position and size
   - resolve text overflow
   - custom keymap
@@ -48,6 +44,7 @@ classDiagram
         +setup(config: Config)
         +toggle_outline()
         +update_dividers(bufnr: number, winnr: number)
+        +highlight_divider_in_outline(lnum: number)
     }
 ```
 
@@ -111,13 +108,14 @@ classDiagram
 classDiagram
     Decorator ..> Dividers
     class Decorator {
+        -ns_id: number
+
+        +new() Decorator
         +clear_decorations(bufnr: number)
         +decorate_dividers(dividers: Dividers)
         -decorate_divider(divider: Divider)
         -highlight_divider(divider: Divider)
         -mark_divider(divider: Divider)
-
-        -ns_id: number
     }
 ```
 
@@ -125,20 +123,41 @@ classDiagram
 
 ```mermaid
 classDiagram
+    note for Outline "`lnum` represents the line number of the outline buffer"
     Outline ..> Dividers
+    Outline ..> OutlineConfig
+    Outline --* Window
     class Outline {
-        -is_open: boolean
+        -outline_window: Window
+        -preview_window: Window
+        -dividers: Divider[]
 
-        +open_outline(bufnr: number)
-        +close_outline(bufnr: number)
-        -highlight_current_divider(cur_lnum: number, dividers: Dividers)
-        -draw_dividers(dividers: Dividers)
-        -preview_divider()
-        -fold()
-        -unfold()
-        -fold_all()
-        -unfold_all()
-        -navigate_to_divider()
+        +new() Outline
+        +open_outline(config: OutlineConfig)
+        +close_outline()
+        +set_dividers(dividers: Dividers)
+        +highlight_divider(divider: Divider)
+        +is_open() boolean
+        -draw_lines()
+        -draw_line()
+        -navigate_to_divider(lnum: number)
+        -get_divider(lnum: number)
+        -preview_divider(lnum: number)
+        -set_keymap(config: OutlineConfig)
+        -get_divider_content(line_count: number) string[]
+    }
+
+    class Window {
+        -is_float: number
+        -winnr: number
+        -bufnr: number
+
+        +new_split(pos: 'left' | 'right' | 'top' | 'bottom', size: number) Window
+        +new_float(relative_winnr: number, row: number, col: number, width: number, height: number) Window
+        +get_bufnr() number
+        +get_winnr() number
+        +is_valid() boolean
+        +close()
     }
 ```
 
@@ -164,8 +183,16 @@ classDiagram
     }
 
     class OutlineConfig {
-        +win_pos: 'left' | 'right'
-        +win_width: number
+        +win_pos: 'left' | 'right' | 'top' | 'bottom'
+        +win_size: number
+        +enter_window: boolean
+        +preview_win_width: number
+        +preview_win_height: number
+        +auto_preview: boolean
+        +line_text: (text: string, lnum: string) => string
+        +keymap_navigate: string
+        +keymap_preview: string
+        +keymap_close: string
     }
 ```
 

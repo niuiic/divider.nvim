@@ -7,7 +7,7 @@
   - custom highlight
   - custom level
   - different rules for different filetypes
-  - ignore some filetypes
+  - ignore some buffers
 - sign dividers
   - highlight
   - make marks
@@ -18,10 +18,8 @@
     - optionaly close tree view after navigating
   - highlight current divider
   - update on save or buffer switch
-  - some dividers can be hidden
-  - customize text
+  - hide some dividers
   - custom window position and size
-  - resolve text overflow
   - custom keymap
   - preview on hover
 
@@ -145,8 +143,8 @@ classDiagram
         +is_open() boolean
         -draw_lines()
         -draw_line(divider: Divider, lnum: number, bufnr: number)
-        -navigate_to_divider(lnum: number)
-        -get_divider(lnum: number)
+        -navigate_to_divider(lnum: number, config: OutlineConfig)
+        -get_divider(lnum: number) Divider | nil
         -preview_divider(lnum: number, config: OutlineConfig)
         -set_keymap(config: OutlineConfig)
         -set_event_handlers(config: OutlineConfig)
@@ -195,60 +193,12 @@ classDiagram
         +win_size: number
         +enter_window: boolean
         +hl_group: string
+        +close_after_navigate: boolean
         +preview_win_width: number
         +preview_win_height: number
-        +auto_preview: boolean
+        +preview_on_hover: boolean
         +keymap_navigate: string
         +keymap_preview: string
         +keymap_close: string
     }
-```
-
-## Flow
-
-### Get dividers
-
-```mermaid
-flowchart LR
-    start([start]) --> n1
-
-    n1[create DividerParsers] --> n2
-
-    n2[get buffer lines] --> n3
-
-    n3[try to parse each line with each Parser] --> finish
-
-    finish([finish])
-```
-
-### Decorate dividers
-
-```mermaid
-flowchart LR
-    start([start]) --> n1
-
-    n1[clear previous decorations] --> n2
-
-    n2[decorate each divider] --> finish
-
-    finish([finish])
-```
-
-### Update dividers
-
-```mermaid
-flowchart LR
-    start([start]) --> n1
-
-    n1[get dividers] --> n2
-
-    n2[decorate dividers] --> n3
-
-    n3{outline is open}
-    n3 --Y--> n4
-    n3 --N--> finish
-
-    n4[update outline] --> finish
-
-    finish([finish])
 ```

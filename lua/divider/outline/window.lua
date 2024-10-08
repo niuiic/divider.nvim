@@ -88,6 +88,7 @@ function Window:close()
 end
 
 -- % reset_window_options %
+-- %% divider2 %%
 function Window:_reset_window_options(winnr)
 	vim.api.nvim_set_option_value("number", false, {
 		win = winnr,

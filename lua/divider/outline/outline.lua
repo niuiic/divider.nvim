@@ -98,7 +98,7 @@ function Outline:_set_keymap(config)
 
 	-- navigate
 	vim.keymap.set("n", config.keymap_navigate, function()
-		self:_naviagate_to_divider(get_lnum())
+		self:_naviagate_to_divider(get_lnum(), config)
 	end, {
 		buffer = bufnr,
 	})
@@ -123,7 +123,7 @@ function Outline:_set_event_handlers(config)
 	local bufnr = self._outline_window:get_bufnr()
 	local winnr = self._outline_window:get_winnr()
 
-	if config.auto_preview then
+	if config.preview_on_hover then
 		local prev_lnum
 		vim.api.nvim_create_autocmd("CursorMoved", {
 			buffer = bufnr,
@@ -150,17 +150,27 @@ function Outline:_set_event_handlers(config)
 end
 
 -- % navigate_to_divider %
-function Outline:_naviagate_to_divider(lnum)
+function Outline:_naviagate_to_divider(lnum, config)
 	local divider = self:_get_divider(lnum)
+	if not divider then
+		return
+	end
+
 	vim.api.nvim_set_current_win(divider:get_winnr())
 	vim.api.nvim_win_set_cursor(divider:get_winnr(), { divider:get_lnum(), 0 })
+
+	if config.close_after_navigate then
+		self:close_outline()
+	end
 end
 
 -- % preview_divider %
--- TODO: auto preview
 function Outline:_preview_divider(lnum, config)
 	-- find divider
 	local divider = self:_get_divider(lnum)
+	if not divider then
+		return
+	end
 
 	-- close previous preview window
 	if self._preview_window and self._preview_window:is_valid() then

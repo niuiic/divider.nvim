@@ -58,7 +58,7 @@ classDiagram
     note for Dividers "- `find` return a Divider that contains this line\n- use lnum as key of dividers\n- dividers should be sorted by lnum"
     Dividers --* Divider
     class Dividers {
-        -dividers: Map~number, Divider~
+        -dividers: Dividers[]
 
         +new(dividers: Divider[]) Dividers
         +find(lnum: number) Divider | nil

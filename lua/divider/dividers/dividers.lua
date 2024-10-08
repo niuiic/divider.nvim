@@ -3,14 +3,8 @@ local Dividers = {}
 -- % new %
 function Dividers:new(dividers)
 	local instance = {
-		_dividers = {},
+		_dividers = self:_get_sorted_dividers(dividers),
 	}
-
-	local sorted_dividers = self:_get_sorted_dividers(dividers)
-
-	for _, sorted_divider in ipairs(sorted_dividers) do
-		instance._dividers[sorted_divider:get_lnum()] = sorted_divider
-	end
 
 	setmetatable(instance, {
 		__index = self,
@@ -41,7 +35,7 @@ end
 function Dividers:find(lnum)
 	local target_divider
 
-	for _, divider in pairs(self._dividers) do
+	for _, divider in ipairs(self._dividers) do
 		if divider:get_lnum() <= lnum then
 			target_divider = divider
 		else
@@ -54,7 +48,7 @@ end
 
 -- % each %
 function Dividers:each(fn)
-	for _, divider in pairs(self._dividers) do
+	for _, divider in ipairs(self._dividers) do
 		fn(divider)
 	end
 end

@@ -3,6 +3,15 @@ local M = {}
 M.Config = require("divider.config.config")
 
 M.default_config = {
+	is_enabled = function(bufnr)
+		local filetype = vim.api.nvim_get_option_value("filetype", {
+			buf = bufnr,
+		})
+		return filetype ~= nil
+			and filetype ~= "noice"
+			and filetype ~= "divider_outline"
+			and filetype ~= "divider_outline_preview"
+	end,
 	dividers = {
 		{
 			pattern = [[ %% (.+) %%]],

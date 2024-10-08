@@ -35,4 +35,7 @@ M.toggle_outline = function()
 	end
 end
 
+-- % is_enabled %
+M.is_enabled = M._config:get().is_enabled
+
 return M

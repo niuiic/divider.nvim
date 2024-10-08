@@ -45,6 +45,7 @@ classDiagram
         +toggle_outline()
         +update_dividers(bufnr: number, winnr: number)
         +highlight_divider_in_outline(lnum: number)
+        +is_enabled(bufnr: number, winnr: number) boolean
     }
 ```
 
@@ -172,6 +173,8 @@ classDiagram
     class Config {
         +dividers: DividerConfig[]
         +outline: OutlineConfig
+
+        +is_enabled(bufnr: number, winnr: number) boolean
     }
 
     class DividerConfig {

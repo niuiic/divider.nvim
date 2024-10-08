@@ -81,6 +81,7 @@ classDiagram
         +get_bufnr() number
         +get_winnr() number
         +is_visible_in_outline() boolean
+        +is_same(divider: Divider) boolean
     }
 
     DividerParsers --* DividerParser
@@ -138,7 +139,8 @@ classDiagram
         +open_outline(config: OutlineConfig)
         +close_outline()
         +set_dividers(dividers: Dividers)
-        +highlight_divider(divider: Divider)
+        +highlight_divider(divider: Divider, config: OutlineConfig)
+        +clear_highlights()
         +is_open() boolean
         -draw_lines()
         -draw_line(divider: Divider, lnum: number, bufnr: number)
@@ -191,6 +193,7 @@ classDiagram
         +win_pos: 'left' | 'right' | 'top' | 'bottom'
         +win_size: number
         +enter_window: boolean
+        +hl_group: string
         +preview_win_width: number
         +preview_win_height: number
         +auto_preview: boolean

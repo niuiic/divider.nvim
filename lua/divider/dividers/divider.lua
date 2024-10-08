@@ -17,7 +17,7 @@ function Divider:new(text, lnum, bufnr, winnr, config)
 	return instance
 end
 
--- %% getters %%
+-- % getters %
 function Divider:get_text()
 	return self._text
 end
@@ -52,6 +52,11 @@ end
 
 function Divider:is_visible_in_outline()
 	return self._config.is_visible_in_outline
+end
+
+-- % is_same %
+function Divider:is_same(divider)
+	return divider:get_bufnr() == self:get_bufnr() and divider:get_lnum() == self:get_lnum()
 end
 
 return Divider

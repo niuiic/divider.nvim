@@ -31,7 +31,9 @@ M.toggle_outline = function()
 	if M._outline:is_open() then
 		M._outline:close_outline()
 	else
+		local lnum = vim.api.nvim_win_get_cursor(0)[1]
 		M._outline:open_outline(M._config:get().outline)
+		M.highlight_current_divider_in_outline(lnum)
 	end
 end
 
@@ -39,6 +41,12 @@ end
 M.is_enabled = M._config:get().is_enabled
 
 -- % highlight_current_divider_in_outline %
-M.highlight_current_divider_in_outline = function(lnum) end
+M.highlight_current_divider_in_outline = function(lnum)
+	local divider = M._dividers:find(lnum)
+	M._outline:clear_highlights()
+	if divider then
+		M._outline:highlight_divider(divider, M._config:get().outline)
+	end
+end
 
 return M

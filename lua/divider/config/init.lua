@@ -48,6 +48,7 @@ M.default_config = {
 		win_pos = "left",
 		win_size = 30,
 		enter_window = false,
+		hl_group = "CursorLine",
 		preview_win_width = 10,
 		preview_win_height = 10,
 		auto_preview = true,

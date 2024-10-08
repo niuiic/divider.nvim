@@ -7,6 +7,7 @@ function Outline:new()
 	local instance = {
 		_dividers = {},
 		_ns_id = vim.api.nvim_create_namespace("divider.outline"),
+		_hl_ns_id = vim.api.nvim_create_namespace("divider.outline.highlight"),
 	}
 
 	setmetatable(instance, {
@@ -30,6 +31,10 @@ function Outline:open_outline(config)
 	self._outline_window = Window:new_split(config.win_pos, config.win_size)
 	self:_set_keymap(config)
 	self:_draw_lines()
+
+	if config.enter_window then
+		vim.api.nvim_set_current_win(self._outline_window:get_winnr())
+	end
 end
 
 -- % close_outline %
@@ -121,6 +126,36 @@ end
 
 -- % preview_divider %
 function Outline:_preview_divider(lnum) end
+
+-- % highlight_divider %
+function Outline:highlight_divider(divider, config)
+	if not self:is_open() then
+		return
+	end
+
+	for lnum, outline_divider in ipairs(self._dividers) do
+		if divider:is_same(outline_divider) then
+			vim.api.nvim_buf_add_highlight(
+				self._outline_window:get_bufnr(),
+				self._hl_ns_id,
+				config.hl_group,
+				lnum - 1,
+				0,
+				-1
+			)
+			return
+		end
+	end
+end
+
+-- % clear_highlights %
+function Outline:clear_highlights()
+	if not self:is_open() then
+		return
+	end
+
+	vim.api.nvim_buf_clear_namespace(self._outline_window:get_bufnr(), self._hl_ns_id, 0, -1)
+end
 
 -- % get_divider %
 function Outline:_get_divider(lnum)

@@ -1,22 +1,24 @@
----@class divider.Config
 local Config = {}
 
+-- % new %
 function Config:new(config)
-	local cfg = {
+	local instance = {
 		_value = config,
 	}
 
-	setmetatable(cfg, {
+	setmetatable(instance, {
 		__index = self,
 	})
 
-	return cfg
+	return instance
 end
 
+-- % set %
 function Config:set(new_config)
 	self._value = vim.tbl_deep_extend("force", self._value, new_config)
 end
 
+-- % get %
 function Config:get()
 	return self._value
 end

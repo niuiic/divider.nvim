@@ -44,7 +44,7 @@ classDiagram
         +setup(config: Config)
         +toggle_outline()
         +update_dividers(bufnr: number, winnr: number)
-        +highlight_divider_in_outline(lnum: number)
+        +highlight_current_divider_in_outline(lnum: number)
         +is_enabled(bufnr: number, winnr: number) boolean
     }
 ```

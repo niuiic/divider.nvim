@@ -28,6 +28,7 @@ function Outline:open_outline(config)
 	end
 
 	self._outline_window = Window:new_split(config.win_pos, config.win_size)
+	self:_set_keymap(config)
 	self:_draw_lines()
 end
 
@@ -58,11 +59,20 @@ end
 
 -- % draw_lines %
 function Outline:_draw_lines()
-	vim.api.nvim_buf_set_lines(self._outline_window:get_bufnr(), 0, -1, false, {})
+	local bufnr = self._outline_window:get_bufnr()
+
+	vim.api.nvim_set_option_value("modifiable", true, {
+		buf = bufnr,
+	})
+	vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, {})
 
 	for index, divider in ipairs(self._dividers) do
-		self:_draw_line(divider, index, self._outline_window:get_bufnr())
+		self:_draw_line(divider, index, bufnr)
 	end
+
+	vim.api.nvim_set_option_value("modifiable", false, {
+		buf = bufnr,
+	})
 end
 
 function Outline:_draw_line(divider, lnum, bufnr)
@@ -70,6 +80,22 @@ function Outline:_draw_line(divider, lnum, bufnr)
 		string.format("%s%s: %s", string.rep("  ", divider:get_level() - 1), divider:get_lnum(), divider:get_text())
 	vim.api.nvim_buf_set_lines(bufnr, lnum - 1, lnum - 1, false, { text })
 	vim.api.nvim_buf_add_highlight(bufnr, self._ns_id, divider:get_hl_group(), lnum - 1, 0, -1)
+end
+
+-- % set_keymap %
+function Outline:_set_keymap(config)
+
+end
+
+-- % navigate_to_divider %
+function Outline:_naviagate_to_divider(lnum)
+	local divider = self:_get_divider(lnum)
+	vim.api.nvim_win_set_cursor(divider:get_winnr(), { divider:get_lnum(), 0 })
+end
+
+-- % get_divider %
+function Outline:_get_divider(lnum)
+	return self._dividers[lnum]
 end
 
 return Outline

@@ -38,4 +38,7 @@ end
 -- % is_enabled %
 M.is_enabled = M._config:get().is_enabled
 
+-- % highlight_current_divider_in_outline %
+M.highlight_current_divider_in_outline = function(lnum) end
+
 return M

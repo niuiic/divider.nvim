@@ -7,7 +7,7 @@ function Decorator:new()
 	}
 
 	setmetatable(instance, {
-		__index = self,
+		__index = Decorator,
 	})
 
 	return instance
@@ -15,7 +15,7 @@ end
 
 -- % clear_decorations %
 function Decorator:clear_decorations(bufnr)
-	vim.api.nvim_buf_clear_namespace(bufnr, self._ns_id, 1, -1)
+	vim.api.nvim_buf_clear_namespace(bufnr, self._ns_id, 0, -1)
 end
 
 -- % decorate_dividers %
@@ -33,7 +33,14 @@ function Decorator:_decorate_divider(divider)
 end
 
 function Decorator:_highlight_divider(divider)
-	vim.api.nvim_buf_add_highlight(divider:get_bufnr(), self._ns_id, divider:get_hl_group(), divider:get_lnum(), 0, -1)
+	vim.api.nvim_buf_add_highlight(
+		divider:get_bufnr(),
+		self._ns_id,
+		divider:get_hl_group(),
+		divider:get_lnum() - 1,
+		0,
+		-1
+	)
 end
 
 function Decorator:_mark_divider(divider)
@@ -42,14 +49,14 @@ function Decorator:_mark_divider(divider)
 	local mark_chars = string.rep(divider:get_mark_char(), columns)
 
 	if mark_pos == "both" or mark_pos == "top" then
-		vim.api.nvim_buf_set_extmark(divider:get_bufnr(), self._ns_id, divider:get_lnum(), 0, {
+		vim.api.nvim_buf_set_extmark(divider:get_bufnr(), self._ns_id, divider:get_lnum() - 1, 0, {
 			virt_lines = { { { mark_chars, divider:get_hl_group() } } },
 			virt_lines_above = true,
 		})
 	end
 
 	if mark_pos == "both" or mark_pos == "bottom" then
-		vim.api.nvim_buf_set_extmark(divider:get_bufnr(), self._ns_id, divider:get_lnum(), 0, {
+		vim.api.nvim_buf_set_extmark(divider:get_bufnr(), self._ns_id, divider:get_lnum() - 1, 0, {
 			virt_lines = { { { mark_chars, divider:get_hl_group() } } },
 		})
 	end

@@ -1,6 +1,8 @@
-local Config = require("divider.config.config")
+local M = {}
 
-local default_config = {
+M.Config = require("divider.config.config")
+
+M.default_config = {
 	dividers = {
 		{
 			pattern = [[ %% (.+) %%]],
@@ -38,8 +40,15 @@ local default_config = {
 	},
 	outline = {
 		win_pos = "left",
-		win_width = 30,
+		win_size = 30,
+		enter_window = false,
+		preview_win_width = 10,
+		preview_win_height = 10,
+		auto_preview = true,
+		keymap_navigate = "<cr>",
+		keymap_preview = "p",
+		keymap_close = "q",
 	},
 }
 
-return Config:new(default_config)
+return M

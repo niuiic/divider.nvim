@@ -9,7 +9,7 @@ function DividerParser:new(config)
 	}
 
 	setmetatable(instance, {
-		__index = self,
+		__index = DividerParser,
 	})
 
 	return instance

@@ -7,7 +7,7 @@ function Config:new(config)
 	}
 
 	setmetatable(instance, {
-		__index = self,
+		__index = Config,
 	})
 
 	return instance

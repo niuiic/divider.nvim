@@ -14,7 +14,7 @@ function DividerParsers:new(configs)
 	}
 
 	setmetatable(instance, {
-		__index = self,
+		__index = DividerParsers,
 	})
 
 	return instance
@@ -22,7 +22,7 @@ end
 
 -- % parse_file %
 function DividerParsers:parse_file(bufnr, winnr)
-	local lines = vim.api.nvim_buf_get_lines(bufnr, 1, -1, false)
+	local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 	local dividers = {}
 
 	for lnum, line in ipairs(lines) do

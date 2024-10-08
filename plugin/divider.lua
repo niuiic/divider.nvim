@@ -3,7 +3,11 @@ local divider = require("divider")
 vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter", "BufWritePost" }, {
 	pattern = { "*" },
 	callback = function(args)
-		divider.update_dividers(args.buf, vim.api.nvim_get_current_win())
+		local winnr = vim.api.nvim_get_current_win()
+		local bufnr = vim.api.nvim_win_get_buf(winnr)
+		if args.buf == bufnr then
+			divider.update_dividers(bufnr, winnr)
+		end
 	end,
 })
 

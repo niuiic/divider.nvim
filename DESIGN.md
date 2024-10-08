@@ -128,6 +128,7 @@ classDiagram
     Outline ..> OutlineConfig
     Outline --* Window
     class Outline {
+        -ns_id: number
         -outline_window: Window
         -preview_window: Window
         -dividers: Divider[]
@@ -139,7 +140,7 @@ classDiagram
         +highlight_divider(divider: Divider)
         +is_open() boolean
         -draw_lines()
-        -draw_line()
+        -draw_line(divider: Divider, lnum: number, bufnr: number)
         -navigate_to_divider(lnum: number)
         -get_divider(lnum: number)
         -preview_divider(lnum: number)
@@ -158,6 +159,7 @@ classDiagram
         +get_winnr() number
         +is_valid() boolean
         +close()
+        -reset_window_options()
     }
 ```
 
@@ -189,7 +191,6 @@ classDiagram
         +preview_win_width: number
         +preview_win_height: number
         +auto_preview: boolean
-        +line_text: (text: string, lnum: string) => string
         +keymap_navigate: string
         +keymap_preview: string
         +keymap_close: string

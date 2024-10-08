@@ -20,9 +20,14 @@ function Window:new_split(pos, size)
 
 	instance._winnr = vim.api.nvim_get_current_win()
 	instance._bufnr = vim.api.nvim_create_buf(false, true)
+	vim.api.nvim_set_option_value("filetype", "divider_outline", {
+		buf = instance._bufnr,
+	})
 	vim.api.nvim_win_set_buf(instance._winnr, instance._bufnr)
 
 	vim.api.nvim_set_current_win(cur_win)
+
+	Window:_reset_window_options(instance._winnr)
 
 	setmetatable(instance, {
 		__index = Window,
@@ -39,6 +44,9 @@ function Window:new_float(relative_winnr, row, col, width, height)
 
 	local cur_zindex = vim.api.nvim_win_get_config(0).zindex or 0
 	instance._bufnr = vim.api.nvim_create_buf(false, true)
+	vim.api.nvim_set_option_value("filetype", "divider_outline_preview", {
+		buf = instance._bufnr,
+	})
 
 	instance._winnr = vim.api.nvim_open_win(instance._bufnr, false, {
 		relative = "win",
@@ -50,6 +58,12 @@ function Window:new_float(relative_winnr, row, col, width, height)
 		zindex = cur_zindex + 1,
 		style = "minimal",
 		border = "rounded",
+	})
+
+	Window:_reset_window_options(instance._winnr)
+
+	setmetatable(instance, {
+		__index = Window,
 	})
 
 	return instance
@@ -76,6 +90,34 @@ function Window:close()
 		vim.api.nvim_buf_delete(self:get_bufnr(), { force = true })
 		vim.api.nvim_win_close(self:get_winnr(), true)
 	end)
+end
+
+-- % reset_window_options %
+function Window:_reset_window_options(winnr)
+	vim.api.nvim_set_option_value("number", false, {
+		win = winnr,
+	})
+	vim.api.nvim_set_option_value("relativenumber", false, {
+		win = winnr,
+	})
+	vim.api.nvim_set_option_value("winfixwidth", true, {
+		win = winnr,
+	})
+	vim.api.nvim_set_option_value("list", false, {
+		win = winnr,
+	})
+	vim.api.nvim_set_option_value("wrap", true, {
+		win = winnr,
+	})
+	vim.api.nvim_set_option_value("linebreak", true, {
+		win = winnr,
+	})
+	vim.api.nvim_set_option_value("breakindent", true, {
+		win = winnr,
+	})
+	vim.api.nvim_set_option_value("showbreak", "      ", {
+		win = winnr,
+	})
 end
 
 return Window

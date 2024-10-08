@@ -11,7 +11,7 @@ function Divider:new(text, lnum, bufnr, winnr, config)
 	}
 
 	setmetatable(instance, {
-		__index = self,
+		__index = Divider,
 	})
 
 	return instance

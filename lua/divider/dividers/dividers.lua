@@ -7,7 +7,7 @@ function Dividers:new(dividers)
 	}
 
 	setmetatable(instance, {
-		__index = self,
+		__index = Dividers,
 	})
 
 	return instance

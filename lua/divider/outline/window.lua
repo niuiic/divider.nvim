@@ -6,23 +6,20 @@ function Window:new_split(pos, size)
 		is_float = false,
 	}
 
+	instance._bufnr = vim.api.nvim_create_buf(false, true)
+	vim.api.nvim_buf_set_var(instance._bufnr, "divider", "disabled")
+
 	local cur_win = vim.api.nvim_get_current_win()
 
 	if pos == "left" then
 		vim.cmd("topleft " .. size .. "vs")
 	elseif pos == "right" then
 		vim.cmd(size .. "vs")
-	elseif pos == "bottom" then
-		vim.cmd(size .. "sp")
 	else
-		vim.cmd("top " .. size .. "sp")
+		error("pos is not supported")
 	end
 
 	instance._winnr = vim.api.nvim_get_current_win()
-	instance._bufnr = vim.api.nvim_create_buf(false, true)
-	vim.api.nvim_set_option_value("filetype", "divider_outline", {
-		buf = instance._bufnr,
-	})
 	vim.api.nvim_win_set_buf(instance._winnr, instance._bufnr)
 
 	vim.api.nvim_set_current_win(cur_win)
@@ -42,9 +39,10 @@ function Window:new_float(relative_winnr, row, col, width, height)
 		is_float = true,
 	}
 
-	local cur_zindex = vim.api.nvim_win_get_config(0).zindex or 0
 	instance._bufnr = vim.api.nvim_create_buf(false, true)
+	vim.api.nvim_buf_set_var(instance._bufnr, "divider", "disabled")
 
+	local cur_zindex = vim.api.nvim_win_get_config(0).zindex or 0
 	instance._winnr = vim.api.nvim_open_win(instance._bufnr, false, {
 		relative = "win",
 		win = relative_winnr,

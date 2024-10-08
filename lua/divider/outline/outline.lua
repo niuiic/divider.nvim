@@ -104,7 +104,7 @@ function Outline:_set_keymap(config)
 
 	-- preview
 	vim.keymap.set("n", config.keymap_preview, function()
-		self:_preview_divider(get_lnum())
+		self:_preview_divider(get_lnum(), config)
 	end, {
 		buffer = bufnr,
 	})
@@ -125,7 +125,54 @@ function Outline:_naviagate_to_divider(lnum)
 end
 
 -- % preview_divider %
-function Outline:_preview_divider(lnum) end
+-- TODO: auto preview
+function Outline:_preview_divider(lnum, config)
+	-- find divider
+	local divider = self:_get_divider(lnum)
+
+	-- close previous preview window
+	if self._preview_window and self._preview_window:is_valid() then
+		self._preview_window:close()
+	end
+
+	-- open preview window
+	local col
+	if config.win_pos == "left" then
+		col = config.win_size
+	else
+		col = config.preview_win_width * -1 - 2
+	end
+	self._preview_window = Window:new_float(
+		self._outline_window:get_winnr(),
+		vim.api.nvim_win_get_cursor(self._outline_window:get_winnr())[1] - 1,
+		col,
+		config.preview_win_width,
+		config.preview_win_height
+	)
+	local filetype = vim.api.nvim_get_option_value("filetype", { buf = divider:get_bufnr() })
+	vim.api.nvim_set_option_value("filetype", filetype, {
+		buf = self._preview_window:get_bufnr(),
+	})
+
+	-- set content
+	local lines = vim.api.nvim_buf_get_lines(divider:get_bufnr(), 0, -1, false)
+	vim.api.nvim_buf_set_lines(self._preview_window:get_bufnr(), 0, -1, false, lines)
+	local cursor_pos = vim.api.nvim_win_get_cursor(self._outline_window:get_winnr())
+	vim.api.nvim_set_current_win(self._preview_window:get_winnr())
+	vim.api.nvim_win_set_cursor(self._preview_window:get_winnr(), { divider:get_lnum(), 0 })
+	vim.cmd("normal zz")
+	local cursor_lnum = vim.api.nvim_win_get_cursor(self._preview_window:get_winnr())[1]
+	vim.api.nvim_buf_add_highlight(
+		self._preview_window:get_bufnr(),
+		self._ns_id,
+		config.hl_group,
+		cursor_lnum - 1,
+		0,
+		-1
+	)
+	vim.api.nvim_set_current_win(self._outline_window:get_winnr())
+	vim.api.nvim_win_set_cursor(self._outline_window:get_winnr(), cursor_pos)
+end
 
 -- % highlight_divider %
 function Outline:highlight_divider(divider, config)

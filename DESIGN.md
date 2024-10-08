@@ -131,6 +131,7 @@ classDiagram
     Outline --* Window
     class Outline {
         -ns_id: number
+        -hl_ns_id: number
         -outline_window: Window
         -preview_window: Window
         -dividers: Divider[]
@@ -146,7 +147,7 @@ classDiagram
         -draw_line(divider: Divider, lnum: number, bufnr: number)
         -navigate_to_divider(lnum: number)
         -get_divider(lnum: number)
-        -preview_divider(lnum: number)
+        -preview_divider(lnum: number, config: OutlineConfig)
         -set_keymap(config: OutlineConfig)
         -get_divider_content(line_count: number) string[]
     }
@@ -156,7 +157,7 @@ classDiagram
         -winnr: number
         -bufnr: number
 
-        +new_split(pos: 'left' | 'right' | 'top' | 'bottom', size: number) Window
+        +new_split(pos: 'left' | 'right', size: number) Window
         +new_float(relative_winnr: number, row: number, col: number, width: number, height: number) Window
         +get_bufnr() number
         +get_winnr() number
@@ -190,7 +191,7 @@ classDiagram
     }
 
     class OutlineConfig {
-        +win_pos: 'left' | 'right' | 'top' | 'bottom'
+        +win_pos: 'left' | 'right'
         +win_size: number
         +enter_window: boolean
         +hl_group: string

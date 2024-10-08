@@ -114,6 +114,10 @@ classDiagram
         +clear_decorations(bufnr: number)
         +decorate_dividers(dividers: Dividers)
         -decorate_divider(divider: Divider)
+        -highlight_divider(divider: Divider)
+        -mark_divider(divider: Divider)
+
+        -ns_id: number
     }
 ```
 

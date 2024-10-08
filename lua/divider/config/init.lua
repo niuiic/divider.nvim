@@ -7,7 +7,7 @@ local default_config = {
 			level = 1,
 			hl_group = "LineNr",
 			mark_char = "-",
-			mark_pos = "top",
+			mark_pos = "bottom",
 			is_visible_in_outline = true,
 			is_enabled = function()
 				return true
@@ -18,7 +18,7 @@ local default_config = {
 			level = 2,
 			hl_group = "CursorLineNr",
 			mark_char = "-",
-			mark_pos = "top",
+			mark_pos = "bottom",
 			is_visible_in_outline = true,
 			is_enabled = function()
 				return true
@@ -29,7 +29,7 @@ local default_config = {
 			level = 3,
 			hl_group = "MoreMsg",
 			mark_char = "-",
-			mark_pos = "top",
+			mark_pos = "bottom",
 			is_visible_in_outline = true,
 			is_enabled = function()
 				return true

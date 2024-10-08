@@ -1,20 +1,12 @@
--- local divider = require("divider")
--- local static = require("divider.static")
--- local core = require("core")
---
--- vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter", "BufWritePost" }, {
--- 	pattern = { "*" },
--- 	callback = function()
--- 		if
--- 			core.lua.list.includes(static.config.enabled_filetypes, function(v)
--- 				return v == vim.bo.filetype
--- 			end)
--- 		then
--- 			divider.divide()
--- 		end
--- 	end,
--- })
---
+local divider = require("divider")
+
+vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter", "BufWritePost" }, {
+	pattern = { "*" },
+	callback = function(args)
+		divider.update_dividers(args.buf, vim.api.nvim_get_current_win())
+	end,
+})
+
 -- vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
 -- 	pattern = { "*" },
 -- 	callback = function(args)

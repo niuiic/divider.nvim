@@ -38,7 +38,9 @@ M.toggle_outline = function()
 end
 
 -- % is_enabled %
-M.is_enabled = M._config:get().is_enabled
+M.is_enabled = function(bufnr, winnr)
+	return M._config:get().is_enabled(bufnr, winnr)
+end
 
 -- % highlight_current_divider_in_outline %
 M.highlight_current_divider_in_outline = function(lnum)

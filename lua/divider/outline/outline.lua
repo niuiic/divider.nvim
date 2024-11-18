@@ -141,11 +141,14 @@ function Outline:_set_event_handlers(config)
 
 	vim.api.nvim_create_autocmd("WinLeave", {
 		buffer = bufnr,
-		callback = function()
-			if self._preview_window then
+		callback = vim.schedule_wrap(function()
+			local ok, value = pcall(vim.api.nvim_buf_get_var, 0, "divider")
+			local is_divider_window = ok and value == "disabled"
+
+			if self._preview_window and not is_divider_window then
 				self._preview_window:close()
 			end
-		end,
+		end),
 	})
 end
 
